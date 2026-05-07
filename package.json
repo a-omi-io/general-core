@@ -1,6 +1,6 @@
 {
-  "name": "@omi-io/template",
-  "description": "Nx monorepo template for TypeScript libraries with Yarn, CI, and release workflows",
+  "name": "@omi-io/general-core",
+  "description": "A collection of reusable TypeScript utility libraries and helpers for general-purpose software development.",
   "private": true,
   "engines": {
     "node": ">=20.0.0",
