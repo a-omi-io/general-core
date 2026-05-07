@@ -1,0 +1,37 @@
+{
+  "name": "@omi-io/auxiliaries",
+  "scopeCommitName": "@:auxs",
+  "version": "0.0.1",
+  "description": "Utility helpers for array checks, collections, memoization, text, and more.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a-omi-io/general-core.git",
+    "directory": "packages/auxiliaries"
+  },
+  "sideEffect": false,
+  "files": ["dist"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "scripts": {
+    "clean": "omi-io-pkg clean",
+    "build": "yarn clean && omi-io-pkg build && tsc && omi-io-pkg alias",
+    "publish": "yarn npm publish",
+    "test": "jest",
+    "_version": "npm version",
+    "lint": "eslint ./src"
+  },
+  "devDependencies": {
+    "@omi-io/pkg-scripts": "^2.2.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.js"
+    },
+    "./package.json": "./package.json"
+  }
+}
