@@ -1,0 +1,85 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - release/**
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    name: Release package from branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+          registry-url: https://registry.npmjs.org
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Parse release branch
+        id: parse
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BRANCH="${GITHUB_REF_NAME}"
+          if [[ ! "${BRANCH}" =~ ^release/([^/]+)/([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+            echo "Expected branch format: release/<pkg>/<x.y.z>"
+            echo "Actual branch: ${BRANCH}"
+            exit 1
+          fi
+
+          PKG="${BASH_REMATCH[1]}"
+          VERSION="${BASH_REMATCH[2]}"
+          PROJECT="@omi-io/${PKG}"
+
+          if ! yarn nx show projects | grep -Fx "${PROJECT}" > /dev/null; then
+            echo "Nx project not found for package: ${PROJECT}"
+            exit 1
+          fi
+
+          echo "pkg=${PKG}" >> "${GITHUB_OUTPUT}"
+          echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
+          echo "project=${PROJECT}" >> "${GITHUB_OUTPUT}"
+
+      - name: Configure git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Build package
+        run: yarn nx run-many -t build -p "${{ steps.parse.outputs.project }}"
+
+      - name: Version package
+        run: yarn nx release version "${{ steps.parse.outputs.version }}" --projects="${{ steps.parse.outputs.project }}" --git-commit --git-tag
+
+      - name: Generate changelog and GitHub release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn nx release changelog "${{ steps.parse.outputs.version }}" --projects="${{ steps.parse.outputs.project }}" --git-commit
+
+      - name: Publish package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
+        run: yarn nx release publish --projects="${{ steps.parse.outputs.project }}"
+
+      - name: Push release commit and tags to main
+        run: git push --follow-tags origin HEAD:main
