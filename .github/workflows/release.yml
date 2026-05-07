@@ -78,7 +78,7 @@ jobs:
       - name: Publish package
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: "true"
+          NPM_CONFIG_PROVENANCE: ${{ env.ACT == 'true' && 'false' || 'true' }}
         run: yarn nx release publish --projects="${{ steps.parse.outputs.project }}"
 
       - name: Push release commit and tags to main
