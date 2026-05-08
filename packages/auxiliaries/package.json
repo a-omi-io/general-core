@@ -1,7 +1,7 @@
 {
   "name": "@omi-io/auxiliaries",
   "scopeCommitName": "@:auxs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utility helpers for array checks, collections, memoization, text, and more.",
   "license": "MIT",
   "keywords": [
@@ -90,5 +90,17 @@
       "require": "./dist/cjs/math/index.cjs",
       "default": "./dist/esm/math/index.js"
     }
-  }
+  },
+  "files": [
+    "dist",
+    "check/package.json",
+    "collection/package.json",
+    "define/package.json",
+    "log/package.json",
+    "measure/package.json",
+    "memoize/package.json",
+    "serve/package.json",
+    "text/package.json",
+    "math/package.json"
+  ]
 }
