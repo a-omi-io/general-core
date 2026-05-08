@@ -1,3 +1,7 @@
+## 0.1.4 (2026-05-08)
+
+This was a version bump only for @omi-io/auxiliaries to align it with other projects, there were no code changes.
+
 ## 0.1.3 (2026-05-08)
 
 This was a version bump only for @omi-io/auxiliaries to align it with other projects, there were no code changes.
