@@ -4,6 +4,18 @@
   "version": "0.1.4",
   "description": "Utility helpers for array checks, collections, memoization, text, and more.",
   "license": "MIT",
+  "keywords": [
+    "utils",
+    "utilities",
+    "typescript",
+    "memoize",
+    "throttle",
+    "clamp",
+    "collection",
+    "text",
+    "math",
+    "omi-io"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/a-omi-io/general-core.git",
@@ -11,7 +23,16 @@
   },
   "sideEffect": false,
   "files": [
-    "dist"
+    "dist",
+    "check",
+    "collection",
+    "define",
+    "log",
+    "measure",
+    "memoize",
+    "serve",
+    "text",
+    "math"
   ],
   "publishConfig": {
     "access": "public"
@@ -21,7 +42,6 @@
     "clean": "omi-io-pkg clean",
     "build": "yarn clean && omi-io-pkg build && tsc && omi-io-pkg alias",
     "test": "jest",
-    "_version": "npm version",
     "lint": "eslint ./src"
   },
   "devDependencies": {
@@ -33,6 +53,51 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.js"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./check": {
+      "types": "./dist/types/check/index.d.ts",
+      "require": "./dist/cjs/check/index.cjs",
+      "default": "./dist/esm/check/index.js"
+    },
+    "./collection": {
+      "types": "./dist/types/collection/index.d.ts",
+      "require": "./dist/cjs/collection/index.cjs",
+      "default": "./dist/esm/collection/index.js"
+    },
+    "./define": {
+      "types": "./dist/types/define/index.d.ts",
+      "require": "./dist/cjs/define/index.cjs",
+      "default": "./dist/esm/define/index.js"
+    },
+    "./log": {
+      "types": "./dist/types/log/index.d.ts",
+      "require": "./dist/cjs/log/index.cjs",
+      "default": "./dist/esm/log/index.js"
+    },
+    "./measure": {
+      "types": "./dist/types/measure/index.d.ts",
+      "require": "./dist/cjs/measure/index.cjs",
+      "default": "./dist/esm/measure/index.js"
+    },
+    "./memoize": {
+      "types": "./dist/types/memoize/index.d.ts",
+      "require": "./dist/cjs/memoize/index.cjs",
+      "default": "./dist/esm/memoize/index.js"
+    },
+    "./serve": {
+      "types": "./dist/types/serve/index.d.ts",
+      "require": "./dist/cjs/serve/index.cjs",
+      "default": "./dist/esm/serve/index.js"
+    },
+    "./text": {
+      "types": "./dist/types/text/index.d.ts",
+      "require": "./dist/cjs/text/index.cjs",
+      "default": "./dist/esm/text/index.js"
+    },
+    "./math": {
+      "types": "./dist/types/math/index.d.ts",
+      "require": "./dist/cjs/math/index.cjs",
+      "default": "./dist/esm/math/index.js"
+    }
   }
 }
