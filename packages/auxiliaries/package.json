@@ -20,7 +20,6 @@
   "scripts": {
     "clean": "omi-io-pkg clean",
     "build": "yarn clean && omi-io-pkg build && tsc && omi-io-pkg alias",
-    "publish": "yarn npm publish",
     "test": "jest",
     "_version": "npm version",
     "lint": "eslint ./src"
