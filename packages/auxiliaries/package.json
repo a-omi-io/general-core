@@ -10,7 +10,9 @@
     "directory": "packages/auxiliaries"
   },
   "sideEffect": false,
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   },
