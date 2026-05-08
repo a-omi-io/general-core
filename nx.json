@@ -49,7 +49,9 @@
         "createRelease": false,
         "file": false
       },
-      "projectChangelogs": true
+      "projectChangelogs": {
+        "renderer": "@omi-io/pkg-scripts/changelog-scope-filtered-renderer"
+      }
     },
     "version": {
       "specifierSource": "conventional-commits",
@@ -58,7 +60,7 @@
       "preserveLocalDependencyProtocols": false
     },
     "releaseTag": {
-      "pattern": "{version}"
+      "pattern": "{projectName}@{version}"
     }
   },
   "plugins": [

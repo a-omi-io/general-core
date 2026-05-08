@@ -2749,7 +2749,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@omi-io/auxiliaries@workspace:packages/auxiliaries"
   dependencies:
-    "@omi-io/pkg-scripts": "npm:^2.2.0"
+    "@omi-io/pkg-scripts": "npm:^2.4.0"
   languageName: unknown
   linkType: soft
 
@@ -2763,6 +2763,7 @@ __metadata:
     "@commitlint/cli": "npm:^19.2.1"
     "@commitlint/config-conventional": "npm:^19.1.0"
     "@nx/eslint": "npm:22.7.1"
+    "@omi-io/pkg-scripts": "npm:^2.4.0"
     "@types/fs-extra": "npm:^11"
     "@types/jest": "npm:^29.5.0"
     "@types/node": "npm:^20.11.30"
@@ -2783,9 +2784,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@omi-io/pkg-scripts@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@omi-io/pkg-scripts@npm:2.2.0"
+"@omi-io/pkg-scripts@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "@omi-io/pkg-scripts@npm:2.4.0"
   dependencies:
     esbuild: "npm:^0.20.2"
   peerDependencies:
@@ -2798,7 +2799,8 @@ __metadata:
       optional: true
   bin:
     omi-io-pkg: bin/cli.mjs
-  checksum: 10/bcce59717a7d3fa5bd527a3827f910895251683e62c4240b9d4eb5414843550f53f6031082b33b4b41c7ee8daa0c7cdf19ea976b9d9136b7db0ca2dc8ff1c14a
+    omi-io-pkg-release-with-config: bin/release-with-config.cjs
+  checksum: 10/3ae5c0efd74116097efb0746c177762da93d63f2a5d4cb84bbbd1c291a3914dbbb2b3a15f6aff68af7beac849869ac8111c14b821308a9a9df18739e78f5536c
   languageName: node
   linkType: hard
 

@@ -66,6 +66,7 @@ jobs:
           echo "pkg=${PKG}" >> "${GITHUB_OUTPUT}"
           echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
           echo "project=${PROJECT}" >> "${GITHUB_OUTPUT}"
+          echo "tag=${PROJECT}@${VERSION}" >> "${GITHUB_OUTPUT}"
           echo "scope_commit_name=${SCOPE_COMMIT_NAME}" >> "${GITHUB_OUTPUT}"
 
       - name: Configure git user
@@ -77,19 +78,9 @@ jobs:
         run: yarn nx run-many -t build -p "${{ steps.parse.outputs.project }}"
 
       - name: Version package
-        run: yarn nx release version "${{ steps.parse.outputs.version }}" --projects="${{ steps.parse.outputs.project }}"
+        run: yarn exec omi-io-pkg-release-with-config yarn nx release version "${{ steps.parse.outputs.version }}" --projects="${{ steps.parse.outputs.project }}"
 
-      - name: Generate changelog and GitHub release
-        if: ${{ env.ACT != 'true' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: yarn nx release changelog "${{ steps.parse.outputs.version }}" --projects="${{ steps.parse.outputs.project }}"
-
-      - name: Generate changelog (dry-run for act)
-        if: ${{ env.ACT == 'true' }}
-        run: yarn nx release changelog "${{ steps.parse.outputs.version }}" --projects="${{ steps.parse.outputs.project }}" --dry-run
-
-      - name: Commit release and create annotated tag
+      - name: Commit release changes
         shell: bash
         run: |
           set -euo pipefail
@@ -105,6 +96,8 @@ jobs:
             echo "GITHUB_REF_NAME=${GITHUB_REF_NAME:-}"
             echo "GITHUB_SHA=${GITHUB_SHA:-}"
             echo "==============================="
+            # Prevent pager pauses in local act runs.
+            export GIT_PAGER=cat
 
             echo "Working tree before add:"
             git status --porcelain=v1 || true
@@ -114,8 +107,8 @@ jobs:
 
           if [[ "${ACT:-}" == "true" ]]; then
             echo "Staged changes:"
-            git diff --cached --name-status || true
-            git diff --cached --stat || true
+            git --no-pager diff --cached --name-status || true
+            git --no-pager diff --cached --stat || true
           fi
 
           if git diff --cached --quiet; then
@@ -130,20 +123,41 @@ jobs:
             fi
           fi
 
+          if [[ "${ACT:-}" == "true" ]]; then
+            git show -s --decorate=full --oneline HEAD || true
+          fi
+
+      - name: Generate changelog and GitHub release
+        if: ${{ env.ACT != 'true' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn exec omi-io-pkg-release-with-config yarn nx release changelog "${{ steps.parse.outputs.version }}" --projects="${{ steps.parse.outputs.project }}"
+
+      - name: Generate changelog (dry-run for act)
+        if: ${{ env.ACT == 'true' }}
+        run: yarn exec omi-io-pkg-release-with-config yarn nx release changelog "${{ steps.parse.outputs.version }}" --projects="${{ steps.parse.outputs.project }}" --dry-run
+
+      - name: Create annotated tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.parse.outputs.tag }}"
+          VERSION="${{ steps.parse.outputs.version }}"
+          COMMIT_MESSAGE="release(${{ steps.parse.outputs.scope_commit_name }}): v${VERSION}"
+
           # Ensure tag is created at workflow level (independent from Nx internals).
-          if git ls-remote --tags --exit-code origin "refs/tags/${VERSION}" > /dev/null 2>&1; then
-            echo "Tag ${VERSION} already exists on origin. Skipping tag creation."
+          if git ls-remote --tags --exit-code origin "refs/tags/${TAG}" > /dev/null 2>&1; then
+            echo "Tag ${TAG} already exists on origin. Skipping tag creation."
           else
-            if git rev-parse -q --verify "refs/tags/${VERSION}" > /dev/null; then
-              git tag -d "${VERSION}"
+            if git rev-parse -q --verify "refs/tags/${TAG}" > /dev/null; then
+              git tag -d "${TAG}"
             fi
-            git tag -a "${VERSION}" -m "${COMMIT_MESSAGE}" HEAD
-            echo "Created annotated tag: ${VERSION}"
+            git tag -a "${TAG}" -m "${COMMIT_MESSAGE}" HEAD
+            echo "Created annotated tag: ${TAG}"
           fi
 
           if [[ "${ACT:-}" == "true" ]]; then
-            git show -s --decorate=full --oneline HEAD || true
-            git show "${VERSION}" --no-patch || true
+            git show "${TAG}" --no-patch || true
           fi
 
       - name: Publish package

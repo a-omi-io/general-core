@@ -45,7 +45,7 @@
     "lint": "eslint ./src"
   },
   "devDependencies": {
-    "@omi-io/pkg-scripts": "^2.2.0"
+    "@omi-io/pkg-scripts": "^2.4.0"
   },
   "exports": {
     ".": {
