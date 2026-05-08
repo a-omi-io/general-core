@@ -49,15 +49,24 @@ jobs:
           PKG="${BASH_REMATCH[1]}"
           VERSION="${BASH_REMATCH[2]}"
           PROJECT="@omi-io/${PKG}"
+          PACKAGE_JSON_PATH="packages/${PKG}/package.json"
 
           if ! yarn nx show projects | grep -Fx "${PROJECT}" > /dev/null; then
             echo "Nx project not found for package: ${PROJECT}"
             exit 1
           fi
 
+          if [[ ! -f "${PACKAGE_JSON_PATH}" ]]; then
+            echo "Package manifest not found at: ${PACKAGE_JSON_PATH}"
+            exit 1
+          fi
+
+          SCOPE_COMMIT_NAME="$(node -p "require('./${PACKAGE_JSON_PATH}').scopeCommitName || '@omi-io/${PKG}'")"
+
           echo "pkg=${PKG}" >> "${GITHUB_OUTPUT}"
           echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
           echo "project=${PROJECT}" >> "${GITHUB_OUTPUT}"
+          echo "scope_commit_name=${SCOPE_COMMIT_NAME}" >> "${GITHUB_OUTPUT}"
 
       - name: Configure git user
         run: |
@@ -68,14 +77,68 @@ jobs:
         run: yarn nx run-many -t build -p "${{ steps.parse.outputs.project }}"
 
       - name: Version package
-        run: yarn nx release version "${{ steps.parse.outputs.version }}" --projects="${{ steps.parse.outputs.project }}" --git-commit --git-tag
+        run: yarn nx release version "${{ steps.parse.outputs.version }}" --projects="${{ steps.parse.outputs.project }}"
 
       - name: Generate changelog and GitHub release
+        if: ${{ env.ACT != 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: yarn nx release changelog "${{ steps.parse.outputs.version }}" --projects="${{ steps.parse.outputs.project }}" --git-commit
+        run: yarn nx release changelog "${{ steps.parse.outputs.version }}" --projects="${{ steps.parse.outputs.project }}"
+
+      - name: Generate changelog (dry-run for act)
+        if: ${{ env.ACT == 'true' }}
+        run: yarn nx release changelog "${{ steps.parse.outputs.version }}" --projects="${{ steps.parse.outputs.project }}" --dry-run
+
+      - name: Commit release and create annotated tag
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${ACT:-}" == "true" ]]; then
+            echo "=== Release commit/tag debug ==="
+            echo "pkg=${{ steps.parse.outputs.pkg }}"
+            echo "project=${{ steps.parse.outputs.project }}"
+            echo "version=${{ steps.parse.outputs.version }}"
+            echo "scope_commit_name=${{ steps.parse.outputs.scope_commit_name }}"
+            echo "GITHUB_REF_NAME=${GITHUB_REF_NAME:-}"
+            echo "GITHUB_SHA=${GITHUB_SHA:-}"
+            echo "==============================="
+
+            echo "Working tree before add:"
+            git status --porcelain=v1 || true
+          fi
+
+          git add -A
+
+          if [[ "${ACT:-}" == "true" ]]; then
+            echo "Staged changes:"
+            git diff --cached --name-status || true
+            git diff --cached --stat || true
+          fi
+
+          if git diff --cached --quiet; then
+            echo "No staged changes to commit."
+            exit 0
+          fi
+
+          COMMIT_MESSAGE="release(${{ steps.parse.outputs.scope_commit_name }}): v${{ steps.parse.outputs.version }}"
+          if [[ "${ACT:-}" == "true" ]]; then
+            echo "Commit message will be: ${COMMIT_MESSAGE}"
+          fi
+          git commit -m "${COMMIT_MESSAGE}"
+          if [[ "${ACT:-}" == "true" ]]; then
+            echo "Created commit: $(git rev-parse HEAD)"
+          fi
+
+          git tag -a "${{ steps.parse.outputs.version }}" -m "${COMMIT_MESSAGE}"
+          if [[ "${ACT:-}" == "true" ]]; then
+            echo "Created annotated tag: ${{ steps.parse.outputs.version }}"
+            git show -s --decorate=full --oneline HEAD || true
+            git show "${{ steps.parse.outputs.version }}" --no-patch || true
+          fi
 
       - name: Publish package
+        if: ${{ env.ACT != 'true' }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -83,4 +146,5 @@ jobs:
         run: yarn nx release publish --projects="${{ steps.parse.outputs.project }}"
 
       - name: Push release commit and tags to main
+        if: ${{ env.ACT != 'true' }}
         run: git push --follow-tags origin HEAD:main
