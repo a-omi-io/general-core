@@ -93,6 +93,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          VERSION="${{ steps.parse.outputs.version }}"
+          COMMIT_MESSAGE="release(${{ steps.parse.outputs.scope_commit_name }}): v${VERSION}"
 
           if [[ "${ACT:-}" == "true" ]]; then
             echo "=== Release commit/tag debug ==="
@@ -118,23 +120,30 @@ jobs:
 
           if git diff --cached --quiet; then
             echo "No staged changes to commit."
-            exit 0
+          else
+            if [[ "${ACT:-}" == "true" ]]; then
+              echo "Commit message will be: ${COMMIT_MESSAGE}"
+            fi
+            git commit -m "${COMMIT_MESSAGE}"
+            if [[ "${ACT:-}" == "true" ]]; then
+              echo "Created commit: $(git rev-parse HEAD)"
+            fi
           fi
 
-          COMMIT_MESSAGE="release(${{ steps.parse.outputs.scope_commit_name }}): v${{ steps.parse.outputs.version }}"
-          if [[ "${ACT:-}" == "true" ]]; then
-            echo "Commit message will be: ${COMMIT_MESSAGE}"
-          fi
-          git commit -m "${COMMIT_MESSAGE}"
-          if [[ "${ACT:-}" == "true" ]]; then
-            echo "Created commit: $(git rev-parse HEAD)"
+          # Ensure tag is created at workflow level (independent from Nx internals).
+          if git ls-remote --tags --exit-code origin "refs/tags/${VERSION}" > /dev/null 2>&1; then
+            echo "Tag ${VERSION} already exists on origin. Skipping tag creation."
+          else
+            if git rev-parse -q --verify "refs/tags/${VERSION}" > /dev/null; then
+              git tag -d "${VERSION}"
+            fi
+            git tag -a "${VERSION}" -m "${COMMIT_MESSAGE}" HEAD
+            echo "Created annotated tag: ${VERSION}"
           fi
 
-          git tag -a "${{ steps.parse.outputs.version }}" -m "${COMMIT_MESSAGE}"
           if [[ "${ACT:-}" == "true" ]]; then
-            echo "Created annotated tag: ${{ steps.parse.outputs.version }}"
             git show -s --decorate=full --oneline HEAD || true
-            git show "${{ steps.parse.outputs.version }}" --no-patch || true
+            git show "${VERSION}" --no-patch || true
           fi
 
       - name: Publish package

@@ -40,10 +40,13 @@
     "changelog": {
       "automaticFromRef": true,
       "git": {
-        "tag": false
+        "commit": false,
+        "tag": false,
+        "push": false,
+        "stageChanges": false
       },
       "workspaceChangelog": {
-        "createRelease": "github",
+        "createRelease": false,
         "file": false
       },
       "projectChangelogs": true
