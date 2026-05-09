@@ -1,3 +1,13 @@
+## 1.1.0 (2026-05-09)
+
+### 🚀 Features
+
+- **@:auxs:** quantizeToDecimals, wrapPeriodic, round via quantize ([ed5276f](https://github.com/a-omi-io/general-core/commit/ed5276f))
+
+### ❤️ Thank You
+
+- Arman Khilko @a-omi-io
+
 ## 1.0.2 (2026-05-09)
 
 ### 🩹 Fixes
