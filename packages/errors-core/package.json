@@ -17,7 +17,7 @@
     "url": "git+https://github.com/a-omi-io/general-core.git",
     "directory": "packages/errors"
   },
-  "sideEffect": false,
+  "sideEffects": false,
   "publishConfig": {
     "access": "public"
   },
