@@ -79,7 +79,9 @@ import { delay, throttle } from "@omi-io/auxiliaries/serve";
 ### math
 
 - `toUnsigned32BitInteger(value)` - Converts value to unsigned 32-bit integer.
-- `roundToDecimalPlaces(value, decimalPlaces)` - Rounds to a specific decimal precision.
+- `quantizeToDecimals(value, options?)` - Quantizes to a fixed number of decimal places. `options.mode` is `"round"` | `"floor"` | `"ceil"` (default `"round"`); `options.decimals` defaults to `0`.
+- `roundToDecimalPlaces(value, decimalPlaces)` - Rounds to a specific decimal precision (same as `quantizeToDecimals` with `mode: "round"`).
+- `wrapPeriodic(value, period)` - Maps `value` into the half-open interval `[0, period)` (e.g. angles). Throws `RangeError` if `period` is not finite or not `> 0`.
 
 ## Example
 
@@ -88,11 +90,15 @@ import {
   clamp,
   memoizeArgs,
   pickExcept,
+  quantizeToDecimals,
   roundToDecimalPlaces,
+  wrapPeriodic,
 } from "@omi-io/auxiliaries";
 
 const safe = clamp(42, 0, 10); // 10
 const rounded = roundToDecimalPlaces(3.14159, 2); // 3.14
+const floored = quantizeToDecimals(1.236, { mode: "floor", decimals: 2 }); // 1.23
+const angle = wrapPeriodic(-10, 360); // 350
 const publicUser = pickExcept({ id: 1, email: "a@b.com", password: "x" }, ["password"]);
 
 const slowSum = (a: number, b: number) => a + b;

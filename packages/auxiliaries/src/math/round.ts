@@ -1,3 +1,5 @@
+import { quantizeToDecimals } from "./quantizeDecimals";
+
 /**
  * Rounds a number to a specified number of decimal places.
  *
@@ -9,6 +11,8 @@ export function roundToDecimalPlaces(
     value: number,
     decimalPlaces: number
 ): number {
-    const factor = Math.pow(10, decimalPlaces);
-    return Math.round(value * factor) / factor;
+    return quantizeToDecimals(value, {
+        mode: "round",
+        decimals: decimalPlaces,
+    });
 }
