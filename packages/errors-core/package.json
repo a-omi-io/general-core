@@ -40,6 +40,76 @@
       "types": "./dist/types/index.d.ts",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.js"
+    },
+    "./3dpart": {
+      "types": "./dist/types/3dpart/index.d.ts",
+      "require": "./dist/cjs/3dpart/index.cjs",
+      "default": "./dist/esm/3dpart/index.js"
+    },
+    "./aggregate": {
+      "types": "./dist/types/aggregate/index.d.ts",
+      "require": "./dist/cjs/aggregate/index.cjs",
+      "default": "./dist/esm/aggregate/index.js"
+    },
+    "./auth": {
+      "types": "./dist/types/auth/index.d.ts",
+      "require": "./dist/cjs/auth/index.cjs",
+      "default": "./dist/esm/auth/index.js"
+    },
+    "./cancellation": {
+      "types": "./dist/types/cancellation/index.d.ts",
+      "require": "./dist/cjs/cancellation/index.cjs",
+      "default": "./dist/esm/cancellation/index.js"
+    },
+    "./data": {
+      "types": "./dist/types/data/index.d.ts",
+      "require": "./dist/cjs/data/index.cjs",
+      "default": "./dist/esm/data/index.js"
+    },
+    "./env": {
+      "types": "./dist/types/env/index.d.ts",
+      "require": "./dist/cjs/env/index.cjs",
+      "default": "./dist/esm/env/index.js"
+    },
+    "./http": {
+      "types": "./dist/types/http/index.d.ts",
+      "require": "./dist/cjs/http/index.cjs",
+      "default": "./dist/esm/http/index.js"
+    },
+    "./notification": {
+      "types": "./dist/types/notification/index.d.ts",
+      "require": "./dist/cjs/notification/index.cjs",
+      "default": "./dist/esm/notification/index.js"
+    },
+    "./server": {
+      "types": "./dist/types/server/index.d.ts",
+      "require": "./dist/cjs/server/index.cjs",
+      "default": "./dist/esm/server/index.js"
+    },
+    "./text": {
+      "types": "./dist/types/text/index.d.ts",
+      "require": "./dist/cjs/text/index.cjs",
+      "default": "./dist/esm/text/index.js"
+    },
+    "./timeout": {
+      "types": "./dist/types/timeout/index.d.ts",
+      "require": "./dist/cjs/timeout/index.cjs",
+      "default": "./dist/esm/timeout/index.js"
+    },
+    "./url": {
+      "types": "./dist/types/url/index.d.ts",
+      "require": "./dist/cjs/url/index.cjs",
+      "default": "./dist/esm/url/index.js"
+    },
+    "./utils": {
+      "types": "./dist/types/utils/index.d.ts",
+      "require": "./dist/cjs/utils/index.cjs",
+      "default": "./dist/esm/utils/index.js"
+    },
+    "./worker": {
+      "types": "./dist/types/worker/index.d.ts",
+      "require": "./dist/cjs/worker/index.cjs",
+      "default": "./dist/esm/worker/index.js"
     }
   },
   "files": [
