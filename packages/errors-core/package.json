@@ -1,0 +1,45 @@
+{
+  "name": "@omi-io/errors-core",
+  "scopeCommitName": "@:errc",
+  "version": "0.1.0",
+  "description": "Error handling utilities for general-purpose software development.",
+  "license": "MIT",
+  "keywords": [
+    "errors",
+    "error handling",
+    "error management",
+    "error utilities",
+    "error helpers",
+    "error management utilities"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a-omi-io/general-core.git",
+    "directory": "packages/errors"
+  },
+  "sideEffect": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "types": "./dist/types/index.d.ts",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.js",
+  "scripts": {
+    "clean": "omi-io-pkg clean",
+    "build": "yarn clean && omi-io-pkg build && tsc && omi-io-pkg alias",
+    "test": "jest",
+    "lint": "eslint ./src"
+  },
+  "devDependencies": {
+    "@omi-io/pkg-scripts": "v2.5.0"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.js"
+    }
+  }
+}

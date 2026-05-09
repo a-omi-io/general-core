@@ -2753,6 +2753,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@omi-io/errors-core@workspace:packages/errors-core":
+  version: 0.0.0-use.local
+  resolution: "@omi-io/errors-core@workspace:packages/errors-core"
+  dependencies:
+    "@omi-io/pkg-scripts": "npm:v2.5.0"
+  languageName: unknown
+  linkType: soft
+
 "@omi-io/general-core@workspace:.":
   version: 0.0.0-use.local
   resolution: "@omi-io/general-core@workspace:."
