@@ -1,7 +1,7 @@
 {
   "name": "@omi-io/errors-core",
   "scopeCommitName": "@:errc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Error handling utilities for general-purpose software development.",
   "license": "MIT",
   "keywords": [
