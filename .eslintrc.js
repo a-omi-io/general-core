@@ -14,5 +14,16 @@ module.exports = {
                 sourceType: "module",
             },
         },
+        {
+            files: [
+                "**/*.spec.ts",
+                "**/*.spec.tsx",
+                "**/*.test.ts",
+                "**/*.test.tsx",
+            ],
+            rules: {
+                "max-lines": "off",
+            },
+        },
     ],
 };
