@@ -48,20 +48,26 @@ jobs:
 
           PKG="${BASH_REMATCH[1]}"
           VERSION="${BASH_REMATCH[2]}"
-          PROJECT="@omi-io/${PKG}"
           PACKAGE_JSON_PATH="packages/${PKG}/package.json"
-
-          if ! yarn nx show projects | grep -Fx "${PROJECT}" > /dev/null; then
-            echo "Nx project not found for package: ${PROJECT}"
-            exit 1
-          fi
 
           if [[ ! -f "${PACKAGE_JSON_PATH}" ]]; then
             echo "Package manifest not found at: ${PACKAGE_JSON_PATH}"
             exit 1
           fi
 
-          SCOPE_COMMIT_NAME="$(node -p "require('./${PACKAGE_JSON_PATH}').scopeCommitName || '@omi-io/${PKG}'")"
+          PROJECT="$(node -p "require('./${PACKAGE_JSON_PATH}').name")"
+          if [[ -z "${PROJECT}" ]]; then
+            echo "Missing \"name\" in ${PACKAGE_JSON_PATH}"
+            exit 1
+          fi
+
+          if ! yarn nx show projects | grep -Fx "${PROJECT}" > /dev/null; then
+            echo "Nx project not found for package: ${PROJECT}"
+            echo "(expected root package.json \"name\" to match an Nx project id)"
+            exit 1
+          fi
+
+          SCOPE_COMMIT_NAME="$(node -p "const p=require('./${PACKAGE_JSON_PATH}'); p.scopeCommitName || p.name")"
 
           echo "pkg=${PKG}" >> "${GITHUB_OUTPUT}"
           echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
@@ -117,6 +123,13 @@ jobs:
           fi
 
           git add -A
+          # Stage only release outputs (not the whole repo — avoids act/local dirty files
+          # e.g. workflow edits from being committed with the release).
+          ## PKG="${{ steps.parse.outputs.pkg }}"
+          ## git add -A -- "packages/${PKG}/"
+          ## if [[ -f yarn.lock ]]; then
+          ##   git add -A -- yarn.lock
+          ## fi
 
           if [[ "${ACT:-}" == "true" ]]; then
             echo "Staged changes:"
