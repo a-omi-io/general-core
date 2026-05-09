@@ -1,3 +1,13 @@
+# 1.0.0 (2026-05-09)
+
+### 🚀 Features
+
+- **@:errc:** add ManagerError hierarchy, domain modules, and subpath exports ([93141ed](https://github.com/a-omi-io/general-core/commit/93141ed))
+
+### ❤️ Thank You
+
+- Arman Khilko @a-omi-io
+
 ## 0.1.0 (2026-05-09)
 
 ### 🧹 Chores

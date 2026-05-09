@@ -1,7 +1,7 @@
 {
   "name": "@omi-io/errors-core",
   "scopeCommitName": "@:errc",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Error handling utilities for general-purpose software development.",
   "license": "MIT",
   "keywords": [
@@ -113,6 +113,20 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "3dpart/package.json",
+    "aggregate/package.json",
+    "auth/package.json",
+    "cancellation/package.json",
+    "data/package.json",
+    "env/package.json",
+    "http/package.json",
+    "notification/package.json",
+    "server/package.json",
+    "text/package.json",
+    "timeout/package.json",
+    "url/package.json",
+    "utils/package.json",
+    "worker/package.json"
   ]
 }
