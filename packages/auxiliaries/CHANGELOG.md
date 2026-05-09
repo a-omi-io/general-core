@@ -1,3 +1,13 @@
+## 1.0.2 (2026-05-09)
+
+### 🩹 Fixes
+
+- **@:auxs:** correct package.json sideEffects field name ([2c22686](https://github.com/a-omi-io/general-core/commit/2c22686))
+
+### ❤️ Thank You
+
+- Arman Khilko @a-omi-io
+
 ## 1.0.1 (2026-05-08)
 
 ### 📚 Documentation

@@ -1,7 +1,7 @@
 {
   "name": "@omi-io/auxiliaries",
   "scopeCommitName": "@:auxs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Utility helpers for array checks, collections, memoization, text, and more.",
   "license": "MIT",
   "keywords": [
