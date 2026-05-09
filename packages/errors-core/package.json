@@ -41,5 +41,8 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.js"
     }
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
