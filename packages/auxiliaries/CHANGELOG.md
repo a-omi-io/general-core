@@ -1,3 +1,15 @@
+## 1.2.0 (2026-05-10)
+
+### 🚀 Features
+
+- **@:auxs:** lerp, inverseLerp, remap, approxEqual in math ([931b4e3](https://github.com/a-omi-io/general-core/commit/931b4e3))
+- **@:auxs:** pick, omit in collection ([c04b6bf](https://github.com/a-omi-io/general-core/commit/c04b6bf))
+- **@:auxs:** debounce in @omi-io/auxiliaries/serve ([dd4ce69](https://github.com/a-omi-io/general-core/commit/dd4ce69))
+
+### ❤️ Thank You
+
+- Arman Khilko @a-omi-io
+
 ## 1.1.0 (2026-05-09)
 
 ### 🚀 Features
