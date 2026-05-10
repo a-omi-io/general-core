@@ -85,6 +85,10 @@ import { delay, throttle, debounce } from "@omi-io/auxiliaries/serve";
 - `quantizeToDecimals(value, options?)` - Quantizes to a fixed number of decimal places. `options.mode` is `"round"` | `"floor"` | `"ceil"` (default `"round"`); `options.decimals` defaults to `0`.
 - `roundToDecimalPlaces(value, decimalPlaces)` - Rounds to a specific decimal precision (same as `quantizeToDecimals` with `mode: "round"`).
 - `wrapPeriodic(value, period)` - Maps `value` into the half-open interval `[0, period)` (e.g. angles). Throws `RangeError` if `period` is not finite or not `> 0`.
+- `lerp(a, b, t)` - Linear interpolation `a + (b - a) * t`.
+- `inverseLerp(a, b, value)` - Parameter along the segment from `a` to `b` for `value`; returns `0` when `a === b`.
+- `remap(value, inMin, inMax, outMin, outMax)` - Maps from input range to output range; returns `outMin` if `inMin === inMax`.
+- `approxEqual(a, b, epsilon?)` - `true` when `|a - b| <= epsilon` (default `1e-10`).
 
 ## Example
 
