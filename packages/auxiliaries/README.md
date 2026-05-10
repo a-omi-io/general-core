@@ -28,7 +28,7 @@ Or import from focused subpaths:
 import { isLastIndexOfArray } from "@omi-io/auxiliaries/check";
 import { pickExcept } from "@omi-io/auxiliaries/collection";
 import { clamp, measureExecutionTime } from "@omi-io/auxiliaries/measure";
-import { delay, throttle } from "@omi-io/auxiliaries/serve";
+import { delay, throttle, debounce } from "@omi-io/auxiliaries/serve";
 ```
 
 ## API
@@ -69,6 +69,7 @@ import { delay, throttle } from "@omi-io/auxiliaries/serve";
 
 - `delay(milliseconds, result?)` - Promise-based delay utility.
 - `throttle(fn, ms)` - Throttles function calls to at most once per interval.
+- `debounce(fn, ms)` - Invokes `fn` after `ms` ms have passed since the last call (trailing debounce).
 
 ### text
 
