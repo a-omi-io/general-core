@@ -26,7 +26,7 @@ Or import from focused subpaths:
 
 ```ts
 import { isLastIndexOfArray } from "@omi-io/auxiliaries/check";
-import { pickExcept } from "@omi-io/auxiliaries/collection";
+import { pickExcept, pick, omit } from "@omi-io/auxiliaries/collection";
 import { clamp, measureExecutionTime } from "@omi-io/auxiliaries/measure";
 import { delay, throttle, debounce } from "@omi-io/auxiliaries/serve";
 ```
@@ -40,6 +40,8 @@ import { delay, throttle, debounce } from "@omi-io/auxiliaries/serve";
 ### collection
 
 - `pickExcept(object, excludes)` - Returns a shallow copy of an object excluding selected keys.
+- `pick(object, keys)` - Returns a shallow copy with only selected own keys present.
+- `omit(object, keys)` - Same as `pickExcept` (readable alias).
 
 ### define
 
