@@ -33,7 +33,8 @@
     "clean": "omi-io-pkg clean",
     "build": "yarn clean && omi-io-pkg build && tsc && omi-io-pkg alias",
     "test": "jest",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "tsc-check": "tsc --noEmit --emitDeclarationOnly false"
   },
   "devDependencies": {
     "@omi-io/pkg-scripts": "v2.5.0"
